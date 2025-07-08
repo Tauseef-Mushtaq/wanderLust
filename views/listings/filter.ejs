@@ -1,0 +1,55 @@
+<% layout('layouts/boilerplate') -%>
+<% title = "Filtered Listings" %>
+
+<div class="container mt-4">
+  <h3>Filter Listings by Category</h3>
+
+  <!-- Filter Form -->
+  <form action="/listings/filters" method="GET" class="row g-3 align-items-center mb-4">
+    <div class="col-auto">
+      <select name="category" id="category" class="form-select" required>
+        <option value="" disabled <%= !category ? "selected" : "" %>>Select Category</option>
+        <option value="trending" <%= category === "trending" ? "selected" : "" %>>Trending</option>
+        <option value="rooms" <%= category === "rooms" ? "selected" : "" %>>Rooms</option>
+        <option value="iconic" <%= category === "iconic" ? "selected" : "" %>>Iconic Cities</option>
+        <option value="mountains" <%= category === "mountains" ? "selected" : "" %>>Mountains</option>
+        <option value="castles" <%= category === "castles" ? "selected" : "" %>>Castles</option>
+        <option value="pools" <%= category === "pools" ? "selected" : "" %>>Amazing Pools</option>
+        <option value="camping" <%= category === "camping" ? "selected" : "" %>>Camping</option>
+        <option value="arctic" <%= category === "arctic" ? "selected" : "" %>>Arctic</option>
+        <option value="boats" <%= category === "boats" ? "selected" : "" %>>Boats</option>
+        <option value="domes" <%= category === "domes" ? "selected" : "" %>>Domes</option>
+      </select>
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-dark" type="submit">Apply Filter</button>
+    </div>
+  </form>
+
+  <!-- Listing Cards -->
+  <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1">
+    <% if (searchListings.length === 0) { %>
+      <div class="alert alert-warning text-center">No listings found in this category.</div>
+    <% } %>
+
+    <% for (let listing of searchListings) { %>
+      <div class="col mb-4">
+        <a href="/listings/<%= listing._id %>" class="listing-link text-decoration-none text-dark">
+          <div class="card listing-card h-100 shadow-sm">
+            <img src="<%= listing.image.url %>" class="card-img" style="height: 16rem; object-fit: cover;" alt="Listing Image">
+            <div class="card-body">
+              <h5 class="card-title text-center mt-2"><%= listing.title %></h5>
+              <% if (listing.price != null) { %>
+                <p class="card-text text-center">
+                  &#8360; <%= listing.price.toLocaleString("en-PK") %> / night
+                  <br>
+                  <small class="text-muted">+18% GST</small>
+                </p>
+              <% } %>
+            </div>
+          </div>
+        </a>
+      </div>
+    <% } %>
+  </div>
+</div>
